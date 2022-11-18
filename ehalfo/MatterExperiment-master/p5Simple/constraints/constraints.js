@@ -175,3 +175,44 @@ function setup() {
 
   Composite.add(world, mouseConstraint);
 }
+
+function draw() {
+  background(255);
+  Engine.update(engine);
+  matterBodies.forEach((body) => {
+    body.render();
+  });
+  matterConstraints.forEach((constraint) => constraint.render());
+  // matterBodies.forEach((body) => {
+  //   body.renderDirVector();
+  // });
+}
+
+function makePattern(pWidth) {
+  var canvas = document.createElement("canvas");
+  var ctx = canvas.getContext("2d");
+  canvas.width = canvas.height = pWidth || (10 + Math.random() * 20) >> 0;
+  ctx.fillStyle = "#fff";
+  if (Math.random() * 2 < 1) {
+    ctx.arc(
+      (canvas.width / 2) >> 0,
+      (canvas.width / 2) >> 0,
+      canvas.width * (Math.random() * 0.5),
+      0,
+      2 * Math.PI
+    );
+    ctx.fill();
+  } else {
+    var half = canvas.width / 2;
+    var lineHeight = (Math.random() * canvas.width) >> 0;
+    ctx.translate(half, half);
+    ctx.rotate((Math.random() * 90 * Math.PI) / 180);
+    ctx.fillRect(
+      -canvas.width,
+      (-lineHeight / 2) >> 0,
+      canvas.width * 2,
+      lineHeight
+    );
+  }
+  return ctx.createPattern(canvas, "repeat");
+}
